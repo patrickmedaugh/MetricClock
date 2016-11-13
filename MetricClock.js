@@ -9,11 +9,24 @@ var currentSeconds = hoursSeconds + minutesSeconds + seconds;
 var currentMetricSeconds = Math.round(currentSeconds / oneMetricSecond);
 
 var metricTime = {
-	seconds: currentMetricSeconds % 100,
-	minutes: Math.floor(currentMetricSeconds % 1000 / 10),
-	hours: currentMetricSeconds.toString()[0]
-}
+	seconds: function () {
+		var seconds = currentMetricSeconds % 100;
+		if (seconds < 10) {
+			return "0" + seconds;
+		}
+		return seconds;
+	},
+	minutes: function () {
+		var minutes = Math.floor(currentMetricSeconds % 10000 / 100);
+		if (minutes < 10) {
+			return "0" + minutes;
+		}
+		return minutes;
+	},
+	hours: Math.floor(currentMetricSeconds / 10000)
+};
 
-var currentMetricTime = metricTime.hours + ":" + metricTime.minutes + ":" + metricTime.seconds;
+var currentMetricTime = metricTime.hours + ":" + metricTime.minutes() + ":" + metricTime.seconds();
+
 
 console.log(currentMetricTime)
